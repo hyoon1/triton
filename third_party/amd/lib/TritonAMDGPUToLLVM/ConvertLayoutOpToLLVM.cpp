@@ -209,7 +209,8 @@ public:
     if (inVals.empty())
       return failure();
 
-    assert(triton::gpu::lookupThreadsPerWarp(rewriter) == 32 &&
+    auto wmmaLayout = dyn_cast<AMDWmmaEncodingAttr>(srcType.getEncoding());
+    assert(triton::gpu::getWarpSize(wmmaLayout) == 32 &&
            "Expected warp size 32 for WMMA");
 
     Value c32 = b.i32_val(32);
